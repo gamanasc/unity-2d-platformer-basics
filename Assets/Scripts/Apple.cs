@@ -8,6 +8,8 @@ public class Apple : MonoBehaviour
     private CircleCollider2D circle;
     [SerializeField]
     private GameObject collected;
+    [SerializeField]
+    private int score;
 
     // Start is called before the first frame update
     void Awake()
@@ -21,6 +23,9 @@ public class Apple : MonoBehaviour
             this.sr.enabled = false;
             this.circle.enabled = false;
             collected.SetActive(true);
+
+            GameController.instance.totalScore += score;
+            GameController.instance.UpdateScoreText();
 
             Destroy(this.gameObject, 0.3f);
         }
