@@ -5,10 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float velocidade;
+    private float speed;
     [SerializeField]
     private float forcaPulo;
-    private Rigidbody2D gravidade;
+    private Rigidbody2D rig;
 
     private bool pulando;
     private bool pulo_duplo;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     // Start is called before the first frame update
     private void Awake() {
-        this.gravidade = GetComponent<Rigidbody2D>();
+        this.rig = GetComponent<Rigidbody2D>();
         this.animator = GetComponent<Animator>();
     }
 
@@ -33,11 +33,19 @@ public class Player : MonoBehaviour
     // Movimento lateral
     void Move(){
         
-        Vector3 movimento = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
-        transform.position += movimento * Time.deltaTime * velocidade;
-        if(Input.GetAxis("Horizontal") != 0f){
+
+        // move sem usar a fisica
+        // Vector3 movimento = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+        // transform.position += movimento * Time.deltaTime * speed;
+
+        float movement = Input.GetAxis("Horizontal");
+
+        this.rig.velocity = new Vector2(movement * this.speed, this.rig.velocity.y);
+
+        if(movement != 0f){
             this.animator.SetBool("walk", true);
-            if(Input.GetAxis("Horizontal") < 0){
+            
+            if(movement < 0){
                 this.transform.eulerAngles = new Vector3(0f, 180f, 0f);
             }else{
                 this.transform.eulerAngles = new Vector3(0f, 0f, 0f);
@@ -52,13 +60,13 @@ public class Player : MonoBehaviour
         if(Input.GetButtonDown("Jump") && !isBlowing ){
 
             if(!pulando){
-                gravidade.AddForce(new Vector2(0f, forcaPulo), ForceMode2D.Impulse);
+                rig.AddForce(new Vector2(0f, forcaPulo), ForceMode2D.Impulse);
                 pulo_duplo = true;
                 this.animator.SetBool("jump", true);
 
             }else{
                 if(pulo_duplo){
-                    gravidade.AddForce(new Vector2(0f, forcaPulo), ForceMode2D.Impulse);
+                    rig.AddForce(new Vector2(0f, forcaPulo), ForceMode2D.Impulse);
                     pulo_duplo = false;
                     this.animator.SetBool("jump", true);
                 }
