@@ -72,10 +72,15 @@ public class Player : MonoBehaviour
             pulando = false;
         }
 
-        if(other.gameObject.tag == "Spike"){ // tag spike
+        if(
+            other.gameObject.tag == "Spike" || 
+            other.gameObject.tag == "Saw"
+        ){ // tag spike
             GameController.instance.ShowGameOver();
             Destroy(this.gameObject);
         }
+
+
     }
 
     // Quando personagem NÃO toca algo
