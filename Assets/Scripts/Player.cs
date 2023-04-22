@@ -71,6 +71,11 @@ public class Player : MonoBehaviour
         if(other.gameObject.layer == 8){ // LAYER GROUND
             pulando = false;
         }
+
+        if(other.gameObject.tag == "Spike"){ // tag spike
+            GameController.instance.ShowGameOver();
+            Destroy(this.gameObject);
+        }
     }
 
     // Quando personagem NÃO toca algo
@@ -81,4 +86,5 @@ public class Player : MonoBehaviour
             this.animator.SetBool("jump", false);
         }
     }
+
 }
