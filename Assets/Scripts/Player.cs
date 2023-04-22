@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
 
     private Animator animator;
 
+    private bool isBlowing;
+
     // Start is called before the first frame update
     private void Awake() {
         this.gravidade = GetComponent<Rigidbody2D>();
@@ -47,7 +49,7 @@ public class Player : MonoBehaviour
 
     // Pulo
     void Jump(){
-        if(Input.GetButtonDown("Jump")){
+        if(Input.GetButtonDown("Jump") && !isBlowing ){
 
             if(!pulando){
                 gravidade.AddForce(new Vector2(0f, forcaPulo), ForceMode2D.Impulse);
@@ -89,6 +91,19 @@ public class Player : MonoBehaviour
         if(other.gameObject.layer == 8){ // LAYER GROUND
             pulando = true;
             this.animator.SetBool("jump", false);
+        }
+    }
+
+    // enquanto estiver colidindo
+    private void OnTriggerStay2D(Collider2D other) {
+        if(other.gameObject.layer == 11){
+            isBlowing = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.gameObject.layer == 11){
+            isBlowing = false;
         }
     }
 
